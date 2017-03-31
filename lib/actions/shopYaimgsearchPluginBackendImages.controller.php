@@ -6,6 +6,9 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     {
         $url = waRequest::post('url');
         $response = self::get($url);
+        if ($response['status'] == 302) {
+            $response = self::get($response['redirect_url']);
+        }
         $this->response['status'] = $response['status'];
 
         $pMc = preg_match("/<form([^>]*)checkcaptcha([^>]*)>(.*?)<\/form>/s", $response['content'], $captcha);
@@ -79,11 +82,12 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             curl_setopt($ch, CURLOPT_COOKIEJAR, wa()->getDataPath('plugins/yaimgsearch/' . 'cookie.txt', false, 'shop', true)); 
             curl_setopt($ch, CURLOPT_COOKIEFILE, wa()->getDataPath('plugins/yaimgsearch/' . 'cookie.txt', false, 'shop', true));
             $content = curl_exec($ch);
-            $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $info = curl_getinfo($ch);
             curl_close($ch);
             return array(
                 'content' => $content,
-                'status' => $status
+                'status' => $info['http_code'],
+                'redirect_url' => $info['redirect_url']
             );
         }
         return file_get_contents($url);

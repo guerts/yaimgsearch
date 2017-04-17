@@ -7,7 +7,7 @@ class shopYaimgsearchPlugin extends shopPlugin {
         $view = wa()->getView();
         $view->assign('yaimgs_product_id', $entry['id']);
         $view->assign('product_name', $entry['name']);
-        $view->assign('plugin_url', wa()->getPlugin('yaimgsearch')->getPluginStaticUrl());
+        $view->assign('plugin_url', $this->getPluginStaticUrl());
         return array('images' => $view->fetch($path));
     }
 

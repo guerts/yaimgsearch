@@ -5,7 +5,7 @@
             <!-- yaimgs toolbar -->
             <div class="yaimgs-toolbar">
                 <form class="yaimgs-form">
-                    <input type="text" value="{if $product_name}{$product_name}{/if}" placeholder="Поиск в Яндекс.Картинках">
+                    <input type="text" value="{if $product_name}{$product_name|escape}{/if}" placeholder="Поиск в Яндекс.Картинках">
                     <button type="submit"><span class="search">Поиск</span><i class="icon16 loading"></i></button>
                 </form>
             </div>

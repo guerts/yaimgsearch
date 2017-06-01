@@ -6,31 +6,49 @@ class shopYaimgsearchPluginBackendUploadController extends waJsonController
      * @var shopProductImagesModel
      */
     private $model;
-
+    private $allowed_mime_types = array('image/png', 'image/jpeg', 'image/jpg');
+    
     public function execute()
     {
-        $url = waRequest::post('url');
-        $array = explode('/', $url);
-        $f = explode('.', $array[count($array)-1]);
-        $file_name = $f[0];
-        $file_extension = $f[1];
-        
-        waFiles::upload($url, $file = wa()->getCachePath('plugins/yaimgsearch/' . $file_name . '.' . $file_extension));
-        
+        /*check product*/
         $product_id = waRequest::post('product_id', null, waRequest::TYPE_INT);
         $product_model = new shopProductModel();
+        
         if (!$product_model->checkRights($product_id)) {
             $this->response['error'] = "Access denied";
+            return;
         }
         
+        /*set $image_url*/
+        $image_url = waRequest::post('url');
+        
+        /*check image & url*/
+        if (!$this->checkImage($image_url)) {
+            $this->response['error'] = "Not allowed MIME type or Sever Error";
+            return;
+        }
+        
+        /*generate filename & ext*/
+        $url_array = explode('/', $image_url);
+        $file_array = explode('.', $url_array[count($url_array)-1]);
+        $file_name = $file_array[0];
+        $file_extension = $file_array[1];
+        
+        /*upload file*/
+        waFiles::upload($image_url, $file = wa()->getCachePath('plugins/yaimgsearch/' . $file_name . '.' . $file_extension));
+        
+        /*check file exist*/
         if (!($file && file_exists($file))) {
             $this->response['error'] = 'File not found';
             return;
         }
         
         $image = waImage::factory($file);
+        
+        /*check waImage*/
         if (!$image) {
             $this->response['error'] = 'Incorrect image';
+            unlink($file);
             return;
         }
 
@@ -135,6 +153,69 @@ class shopYaimgsearchPluginBackendUploadController extends waJsonController
         );
         
         unlink($file);
+    }
+    
+    /**
+     *  Check MIME Type & Image exist at remote url
+     */
+    protected function checkImage($url)
+    {
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_NOBODY, 1);
+		    curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+            $exec = curl_exec($ch);
+            $info = curl_getinfo($ch);
+            curl_close($ch);
+            
+            if ($exec !== FALSE && in_array($info['content_type'], $this->allowed_mime_types)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     *  Check MIME Type from file
+     */
+    public function allowedMimeTypes($file)
+    {
+        if (!function_exists('mime_content_type')) {
+            
+            function mime_content_type($filename) {
+                $mime_types = array(
+                    'png' => 'image/png',
+                    'jpeg' => 'image/jpeg',
+                    'jpg' => 'image/jpg',
+                    'gif' => 'image/gif',
+                    'bmp' => 'image/bmp',
+                );
+                $ext = strtolower(array_pop(explode('.', $file)));
+                if (array_key_exists($ext, $mime_types)) {
+                    return $mime_types[$ext];
+                } elseif (function_exists('finfo_open')) {
+                    $finfo = finfo_open(FILEINFO_MIME);
+                    $mimetype = finfo_file($finfo, $file);
+                    finfo_close($finfo);
+                    return $mimetype;
+                } else {
+                    return 'application/octet-stream';
+                }
+            }
+            
+        }
+        
+        if (!in_array(mime_content_type($file), $this->allowed_mime_types)) {
+            return false;
+        }
+        return true;
     }
 
 }

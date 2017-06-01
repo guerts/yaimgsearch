@@ -6,7 +6,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     {
         $url = waRequest::post('url');
         $response = self::get($url);
-        if ($response['status'] == 302) {
+        if ($response['status'] == 302 || $response['status'] == 301) {
             $response = self::get($response['redirect_url']);
         }
         $this->response['status'] = $response['status'];
@@ -38,33 +38,32 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     protected function arrangeItems($items)
     {
         $items_tmp = array();
+        $items = json_decode(json_encode($items), true);
         foreach ($items as $item_key => $item_val) {
             $preview_tmp = array();
-            foreach ($item_val->preview as $p_key => $p_val) {
+            foreach ($item_val['preview'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
-                $p_origin = $p_val->origin;
-                $p_val->origin ? $p_tmp->url = $p_origin->url : '';
-                unset($p_tmp->origin);
+                $p_tmp['url'] = isset($p_val['origin']) ? $p_val['origin']['url'] : $p_val['url'];
+                unset($p_tmp['origin']);
                 $preview_tmp[] = $p_tmp;
             }
             $sizes_tmp = array();
-            foreach ($item_val->dups as $p_key => $p_val) {
+            foreach ($item_val['dups'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
-                $p_origin = $p_val->origin;
-                $p_val->origin ? $p_tmp->url = $p_origin->url : '';
-                unset($p_tmp->origin);
+                $p_tmp['url'] = isset($p_val['origin']) ? $p_val['origin']['url'] : $p_val['url'];
+                unset($p_tmp['origin']);
                 $sizes_tmp[] = $p_tmp;
             }
-            $thumb = $item_val->thumb;
-            $thumb_size = $thumb->size;
+            $thumb = $item_val['thumb'];
+            $thumb_size = $thumb['size'];
             $items_tmp[$item_key]['thumb'] = array(
-                'url' => $thumb->url,
-                'width' => $thumb_size->width,
-                'height' => $thumb_size->height
+                'url' => $thumb['url'],
+                'width' => $thumb_size['width'],
+                'height' => $thumb_size['height']
             );
             $items_tmp[$item_key]['preview'] = $preview_tmp;
             $items_tmp[$item_key]['sizes'] = $sizes_tmp;
-            $items_tmp[$item_key]['description'] = $item_val->snippet;
+            $items_tmp[$item_key]['description'] = $item_val['snippet'];
         }
         return $items_tmp;
     }
@@ -73,7 +72,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     {
         if (function_exists('curl_init')) {
             $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -83,11 +82,15 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             curl_setopt($ch, CURLOPT_COOKIEFILE, wa()->getDataPath('plugins/yaimgsearch/' . 'cookie.txt', false, 'shop', true));
             $content = curl_exec($ch);
             $info = curl_getinfo($ch);
+			if ($info['http_code'] == 301 || $info['http_code'] == 302) {
+				preg_match('/Location:(.*?)\n/', $content, $matches);
+	      		$newUrl = trim(array_pop($matches));
+			}
             curl_close($ch);
             return array(
                 'content' => $content,
                 'status' => $info['http_code'],
-                'redirect_url' => $info['redirect_url']
+                'redirect_url' => $newUrl ? $newUrl : $info['redirect_url']
             );
         }
         return file_get_contents($url);

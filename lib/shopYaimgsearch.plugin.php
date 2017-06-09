@@ -4,7 +4,7 @@ class shopYaimgsearchPlugin extends shopPlugin {
     
     public function backendProductEdit($entry) {
         return array(
-            'images' => self::getLoader($entry, '.s-product-form .content')
+            'images' => self::getLoader($entry, '.s-product-form.images .content')
         );
     }
     
@@ -22,11 +22,9 @@ class shopYaimgsearchPlugin extends shopPlugin {
         $inline_data = array(
             'product_id' => $entry['id'],
             'product_name' => htmlentities($entry['name']),
-            'plugin_url' => $this->getPluginStaticUrl()
+            'plugin_url' => $this->getPluginStaticUrl(),
+            'inject' => $inject
         );
-        if ($inject) {
-            $inline_data['inject'] = $inject;
-        }
         $inline_js = 'var self = this; (function($){ if (typeof yaImgSearch === "function"){ new yaImgSearch(self); } })(jQuery);';
         return "<img style='display:none;' data-bem='".self::escapeString(json_encode($inline_data))."' src='' onerror='".$inline_js."'>";
     }

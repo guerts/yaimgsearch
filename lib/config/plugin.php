@@ -4,7 +4,7 @@ return array(
     'name' => 'Яндекс.Картинки',
     'description' => 'Поиск и загрузка изображений для товара в Яндексе',
     'vendor' => 975294,
-    'version' => '1.0',
+    'version' => '1.01',
     'img' => 'img/yaimgsearch.png',
     'shop_settings' => false,
     'frontend' => false,

@@ -82,6 +82,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             curl_setopt($ch, CURLOPT_COOKIEFILE, wa()->getDataPath('plugins/yaimgsearch/' . 'cookie.txt', false, 'shop', true));
             $content = curl_exec($ch);
             $info = curl_getinfo($ch);
+			$newUrl = false;
 			if ($info['http_code'] == 301 || $info['http_code'] == 302) {
 				preg_match('/Location:(.*?)\n/', $content, $matches);
 	      		$newUrl = trim(array_pop($matches));

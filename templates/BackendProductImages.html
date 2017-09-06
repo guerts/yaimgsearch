@@ -1,71 +1,54 @@
 <!-- yaimgsearch plugin -->
-<div class="yaimgs-wrapper">
-    <div class="content right200px">
-        <div class="yaimgs-container">
-            <!-- yaimgs toolbar -->
-            <div class="yaimgs-toolbar">
-                <form class="yaimgs-form">
-                    <input type="text" value="{if $product_name}{$product_name|escape}{/if}" placeholder="Поиск в Яндекс.Картинках">
-                    <button type="submit"><span class="search">Поиск</span><i class="icon16 loading"></i></button>
-                </form>
+<link href="{$data.plugin_url}css/yaimgs.combined.css" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="{$data.plugin_url}js/yaimgs.combined.js"></script>
+{literal}
+<script id="yaimgs-wrapper" type="text/html">
+<div class="yaimgs-container">
+    <!-- yaimgs toolbar -->
+    <div class="yaimgs-toolbar">
+        <img class="yaimgs-logo" src="{%#o.data.plugin_url%}img/yaimgsearch36.png"/>
+        <form class="yaimgs-form">
+            <div class="yaimgs-form-wr">
+                <input type="text" value="{%#o.data.product_name%}" placeholder="Введите поисковый запрос">
+                <button type="submit"><span class="search">Поиск</span><i class="icon16 loading"></i></button>
             </div>
-            <div class="yaimgs-content">
-                <div class="yaimgs-gallery"></div>
-                <div class="yaimgs-more"><a href="#"><span class="text">Еще картинки</span><i class="icon16 loading"></i></a></div>
-            </div>
-            <!-- yaimgs modal -->
-            <div class="yaimgs-modal">
-                <div class="yaimgs-modal-wrapper">
-                <div class="yaimgs-modal-content">
-                    <a href="#" class="yaimgs-modal-close">&times;</a>
-                    <div class="yaimgs-modal-content__left">
-                        <div class="yaimgs-core-image">
-                            <span id="yaimgs-zoom-container">
-                                <img class="yaimgs-zoom-img" src="">
-                            </span>
-                            <i class="icon16 loading"></i>
-                            <span class="error-text">Не удалось загрузить изображение! Попробуйте другие размеры.</span>
-                        </div>
-                        <div class="yaimgs-carousel"></div>
-                        <div class="yaimgs-core-arrows">
-                            <a class="yaimgs-core-prev" href="#"><span>&#x2039;</span></a>
-                            <a class="yaimgs-core-next" href="#"><span>&#x203A;</span></a>
-                        </div>
-                    </div>
-                    <div class="yaimgs-modal-content__right">
-                        <div class="yaimgs-info"></div>
-                    </div>
+        </form>
+    </div>
+    <div class="yaimgs-content">
+        <div class="yaimgs-gallery"></div>
+        <div class="yaimgs-more"><a href="#"><span class="text">Еще картинки</span><i class="icon16 loading"></i></a></div>
+    </div>
+    <!-- yaimgs modal -->
+    <div class="yaimgs-modal">
+        <div class="yaimgs-modal-wrapper">
+        <div class="yaimgs-modal-content">
+            <a href="#" class="yaimgs-modal-close">&times;</a>
+            <div class="yaimgs-modal-content__left">
+                <div class="yaimgs-core-image">
+                    <span id="yaimgs-zoom-container">
+                        <img class="yaimgs-zoom-img" src="">
+                    </span>
+                    <i class="icon16 loading"></i>
+                    <span class="error-text">Не удалось загрузить изображение! Попробуйте другие размеры.</span>
                 </div>
+                <div class="yaimgs-carousel"></div>
+                <div class="yaimgs-core-arrows">
+                    <a class="yaimgs-core-prev" href="#"><span>&#x2039;</span></a>
+                    <a class="yaimgs-core-next" href="#"><span>&#x203A;</span></a>
                 </div>
             </div>
-            <!-- yaimgs batches  -->
-            <div class="yaimgs-batches">
-                <div class="yaimgs-batches-wrapper"></div>
+            <div class="yaimgs-modal-content__right">
+                <div class="yaimgs-info"></div>
             </div>
         </div>
+        </div>
+    </div>
+    <!-- yaimgs batches  -->
+    <div class="yaimgs-batches">
+        <div class="yaimgs-batches-wrapper"></div>
     </div>
 </div>
-<link href="{$plugin_url}css/yaimgs.combined.css" type="text/css" rel="stylesheet"/>
-<script type="text/javascript" src="{$plugin_url}js/yaimgs.combined.js"></script>
-<script>
-    (function($) {
-        if (typeof yaImgSearch === "function") {
-            new yaImgSearch({
-                product_id: '{$yaimgs_product_id}',
-                locales: {
-                    placeholder: 'добавить описание'
-                },
-                urls: {
-                    captcha: 'https://yandex.ru/checkcaptcha?',
-                    search: 'https://yandex.ru/images/search?text=',
-                    images: '?plugin=yaimgsearch&action=images',
-                    upload: '?plugin=yaimgsearch&action=upload'
-                }
-            });
-        }
-    })(jQuery);
 </script>
-{literal}
 <script id="yaimgs-images" type="text/html">
     {% for (var i = 0, n = o.images.length, image = o.images[0]; i < n; image = o.images[++i]) { %}
     <div class="yaimgs-gallery-item">

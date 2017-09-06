@@ -4,7 +4,7 @@ return array(
     'name' => 'Яндекс.Картинки',
     'description' => 'Поиск и загрузка изображений для товара в Яндексе',
     'vendor' => 975294,
-    'version' => '1.01',
+    'version' => '1.10',
     'img' => 'img/yaimgsearch.png',
     'shop_settings' => false,
     'frontend' => false,
@@ -12,7 +12,9 @@ return array(
         16 => 'img/yaimgsearch.png',
     ),
     'handlers' => array(
-        'backend_product_edit' => 'backendProduct',
+        'backend_menu' => 'backendMenu',
+        'backend_product_edit' => 'backendProductEdit',
+        'backend_product' => 'backendProduct',
     ),
 );
 //EOF

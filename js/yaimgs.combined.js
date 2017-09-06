@@ -285,22 +285,33 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
 
 
 /*
- * YaImgSearch - v1.0
+ * YaImgSearch - v1.10
  * Copyright (c) 2017 Sergey Chirev
  */
-    function yaImgSearch(options) {
+    function yaImgSearch(el) {
         
-        var form = $('.yaimgs-toolbar').find('form');
-        var content = $('.yaimgs-content');
-        var carousel =  $('.yaimgs-carousel');
-        var modal = $('.yaimgs-modal');
+        var data = $(el).data('bem');
+        var wrapper = $(tmpl('yaimgs-wrapper', { data: data }));
+        $(data.inject).prepend(wrapper);
+        
+        var form = $(wrapper).find('.yaimgs-toolbar').find('form');
+        var content = $(wrapper).find('.yaimgs-content');
+        var carousel =  $(wrapper).find('.yaimgs-carousel');
+        var modal = $(wrapper).find('.yaimgs-modal');
         var infos = modal.find('.yaimgs-info');
-        var gallery = $('.yaimgs-gallery');
-        var batches = $('.yaimgs-batches');
+        var gallery = $(wrapper).find('.yaimgs-gallery');
+        var batches = $(wrapper).find('.yaimgs-batches');
         
-        var product_id = options.product_id;
-        var locales = options.locales;
-        var urls = options.urls;
+        var product_id = data.product_id;
+        var locales = {
+            placeholder: 'добавить описание'
+        }
+        var urls = {
+            captcha: 'https://yandex.ru/checkcaptcha?',
+            search: 'https://yandex.ru/images/search?text=',
+            images: '?plugin=yaimgsearch&action=images',
+            upload: '?plugin=yaimgsearch&action=upload'
+        }
         
         var page = 1;
         var images = '';

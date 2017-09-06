@@ -6,7 +6,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     {
         $url = waRequest::post('url');
         $response = self::get($url);
-        if ($response['status'] == 302 || $response['status'] == 301) {
+        if ($response['status'] == 302) {
             $response = self::get($response['redirect_url']);
         }
         $this->response['status'] = $response['status'];
@@ -72,7 +72,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
     {
         if (function_exists('curl_init')) {
             $ch = curl_init($url);
-            curl_setopt($ch, CURLOPT_HEADER, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
@@ -82,16 +82,11 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             curl_setopt($ch, CURLOPT_COOKIEFILE, wa()->getDataPath('plugins/yaimgsearch/' . 'cookie.txt', false, 'shop', true));
             $content = curl_exec($ch);
             $info = curl_getinfo($ch);
-			$newUrl = false;
-			if ($info['http_code'] == 301 || $info['http_code'] == 302) {
-				preg_match('/Location:(.*?)\n/', $content, $matches);
-	      		$newUrl = trim(array_pop($matches));
-			}
             curl_close($ch);
             return array(
                 'content' => $content,
                 'status' => $info['http_code'],
-                'redirect_url' => $newUrl ? $newUrl : $info['redirect_url']
+                'redirect_url' => $info['redirect_url']
             );
         }
         return file_get_contents($url);

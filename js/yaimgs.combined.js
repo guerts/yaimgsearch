@@ -294,13 +294,13 @@ d.slice(e-c+1,e+c+2).addClass("slick-active").attr("aria-hidden","false")),0===a
         var wrapper = $(tmpl('yaimgs-wrapper', { data: data }));
         $(data.inject).prepend(wrapper);
         
-        var form = $(wrapper).find('.yaimgs-toolbar').find('form');
-        var content = $(wrapper).find('.yaimgs-content');
-        var carousel =  $(wrapper).find('.yaimgs-carousel');
-        var modal = $(wrapper).find('.yaimgs-modal');
+        var form = wrapper.find('.yaimgs-toolbar').find('form');
+        var content = wrapper.find('.yaimgs-content');
+        var carousel =  wrapper.find('.yaimgs-carousel');
+        var modal = wrapper.find('.yaimgs-modal');
         var infos = modal.find('.yaimgs-info');
-        var gallery = $(wrapper).find('.yaimgs-gallery');
-        var batches = $(wrapper).find('.yaimgs-batches');
+        var gallery = wrapper.find('.yaimgs-gallery');
+        var batches = wrapper.find('.yaimgs-batches');
         
         var product_id = data.product_id;
         var locales = {

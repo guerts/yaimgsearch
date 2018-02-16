@@ -43,8 +43,8 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             $preview_tmp = array();
             foreach ($item_val['preview'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
-                $p_tmp['width'] = $p_tmp['w'];
-                $p_tmp['height'] = $p_tmp['h'];
+                $p_tmp['width'] = isset($p_tmp['width']) ? $p_tmp['width'] : $p_tmp['w'];;
+                $p_tmp['height'] = isset($p_tmp['height']) ? $p_tmp['h'] : $p_tmp['h'];
                 unset($p_tmp['w']);
                 unset($p_tmp['h']);
                 $p_tmp['url'] = isset($p_val['origin']) ? $p_val['origin']['url'] : $p_val['url'];
@@ -54,8 +54,8 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             $sizes_tmp = array();
             foreach ($item_val['dups'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
-                $p_tmp['width'] = $p_tmp['w'];
-                $p_tmp['height'] = $p_tmp['h'];
+                $p_tmp['width'] = isset($p_tmp['width']) ? $p_tmp['width'] : $p_tmp['w'];
+                $p_tmp['height'] = isset($p_tmp['height']) ? $p_tmp['h'] : $p_tmp['h'];
                 unset($p_tmp['w']);
                 unset($p_tmp['h']);
                 $p_tmp['url'] = isset($p_val['origin']) ? $p_val['origin']['url'] : $p_val['url'];
@@ -66,12 +66,12 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
             $thumb_size = $thumb['size'];
             $items_tmp[$item_key]['thumb'] = array(
                 'url' => $thumb['url'],
-                'width' => $thumb_size['width'],
-                'height' => $thumb_size['height']
+                'width' => isset($thumb_size['width']) ? $thumb_size['width'] : $thumb_size['w'] ,
+                'height' => isset($thumb_size['height']) ? $thumb_size['height'] : $thumb_size['h']
             );
             $items_tmp[$item_key]['preview'] = $preview_tmp;
             $items_tmp[$item_key]['sizes'] = $sizes_tmp;
-            $items_tmp[$item_key]['description'] = $item_val['snippet'];
+            $items_tmp[$item_key]['description'] = $item_val['snippet']['text'];
         }
         return $items_tmp;
     }

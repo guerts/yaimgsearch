@@ -56,7 +56,7 @@
             <img src="{%#image.thumb.url%}">
         </a>
         <span class="yaimgs-gallery-description">
-            <span>{%#image.description.text%}</span>
+            <span>{%#image.description%}</span>
         </span>
     </div>
     {% } %}
@@ -64,7 +64,7 @@
 <script id="yaimgs-info" type="text/html">
     <div>
         <h3>Описание изображения:</h3>
-        <p>{%#o.data.description.text%}</p>
+        <p>{%#o.data.description%}</p>
     </div>
     <a href="{%#o.data.preview[0].url%}" data-height="{%#o.data.preview[0].height%}" data-width="{%#o.data.preview[0].width%}" data-filesize="{%#o.data.preview[0].fileSizeInBytes%}" data-thumb="{%#o.data.thumb.url%}" class="yaimgs-core-link selected">Основное изображение {%#o.data.preview[0].width%}x{%#o.data.preview[0].height%}</a>
     {% for (var i = 0, n = o.data.sizes.length, image = o.data.sizes[0]; i < n; image = o.data.sizes[++i]) { %}

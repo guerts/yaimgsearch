@@ -41,7 +41,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
         $items = json_decode(json_encode($items), true);
         foreach ($items as $item_key => $item_val) {
             $preview_tmp = array();
-            foreach ($item_val['preview'] as $p_key => $p_val) {
+            foreach ((array) $item_val['preview'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
                 $p_tmp['width'] = isset($p_tmp['width']) ? $p_tmp['width'] : $p_tmp['w'];;
                 $p_tmp['height'] = isset($p_tmp['height']) ? $p_tmp['h'] : $p_tmp['h'];
@@ -52,7 +52,7 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
                 $preview_tmp[] = $p_tmp;
             }
             $sizes_tmp = array();
-            foreach ($item_val['dups'] as $p_key => $p_val) {
+            foreach ((array) $item_val['dups'] as $p_key => $p_val) {
                 $p_tmp = $p_val;
                 $p_tmp['width'] = isset($p_tmp['width']) ? $p_tmp['width'] : $p_tmp['w'];
                 $p_tmp['height'] = isset($p_tmp['height']) ? $p_tmp['h'] : $p_tmp['h'];

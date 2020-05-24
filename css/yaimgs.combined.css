@@ -1,5 +1,5 @@
 /*
- * YaImgSearch - v1.10
+ * YaImgSearch - v1.17
  * Copyright (c) 2017 Sergey Chirev
  */
 .yaimgs-wrapper {
@@ -115,15 +115,12 @@
     opacity:0;
 }
 
-
 .yaimgs-content {
     display: none;
     border-top:1px solid #ececec;
     margin-top: 16px;
     padding-top: 16px;
 }
-
-
 .yaimgs-content > p {
     margin: 0 auto;
     max-width: 240px;
@@ -132,7 +129,7 @@
     color: #7C7C7C;
 }
 
-.form__inner {
+.yaimgs-captcha {
     width: 500px;
     margin: 0 auto;
     border: 2px solid #e9e9e9;
@@ -142,48 +139,38 @@
     text-align: center;
     background: #fcfcfc;
 }
-
-.form__inner:before {
+.yaimgs-captcha:before {
     content: 'Введите капчу';
     font-size: 14px;
     display: block;
     margin-bottom: 25px;
 }
-
-.form__inner .form__trigger,
-.form__inner .form__refresh,
-.form__inner .form__audio {
-    display:none;
-}
-
-.form__inner img {
+.yaimgs-captcha img {
     border: 1px solid #ccc;
-    height: 38px;
     display: inline-block;
     vertical-align: middle;
-    min-width: 33%;
+    width: 322px;
+    height: 50px;
 }
-.form__inner .form__arrow {
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 30px;
-    color: #999;
-    width: 10%;
-}
-.form__inner .form__input {
-    display: inline-block;
-    vertical-align: middle;
-    max-width: 36%;
-}
-.form__inner .form__input input {
+.yaimgs-captcha input[name="rep"] {
     font-size: 16px;
     border: 1px solid #dadada;
     height: 40px;
-    width: 80%;
+    width: 324px;
     padding: 0 10px;
+    box-sizing: border-box;
+    text-align: center;
+    margin-top: 20px;
 }
-
-.form__inner .form__submit {
+.yaimgs-captcha .input-wrapper__input-info {
+    font-size: 13px;
+    padding-top: 10px;
+    width: 322px;
+    text-align: left;
+    margin: 0 auto;
+    color: #7c7c7c;
+}
+.yaimgs-captcha button.submit {
     background: #FFDB4D;
     border: 1px solid #F2CF41;
     height: 34px;
@@ -196,29 +183,16 @@
     cursor: pointer;
     position: relative;
 }
-
-.form__inner .form__submit span,
-.form__inner .form__submit .loading {
-    display: inline-block;
-    vertical-align: middle;
+.yaimgs-captcha.load button.submit {
+    color: transparent;
 }
-.form__inner .form__submit .loading {
-    display: none;
-}
-.form__inner.load .form__submit .loading {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    background-size: 20px 20px;
-    width: 20px;
-    height: 20px;
-}
-.form__inner.load .form__submit span {
-    opacity:0;
+.yaimgs-captcha.load button.submit .loading {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
 }
 
 .yaimgs-gallery {

@@ -13,7 +13,9 @@ class shopYaimgsearchPluginBackendImagesController extends waJsonController
 
         $pMc = preg_match("/<form([^>]*)checkcaptcha([^>]*)>(.*?)<\/form>/s", $response['content'], $captcha);
         if ($captcha) {
-            $this->response['captcha'] = $captcha[0];
+            $captcha_content = preg_replace('/onsubmit\="([^>]*)"/', '', $captcha[0]);
+            $captcha_content = preg_replace('/form form_error_no|form form_error_yes/', 'yaimgs-captcha', $captcha_content);
+            $this->response['captcha'] = $captcha_content;
             return;
         }
         

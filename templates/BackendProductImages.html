@@ -1,6 +1,6 @@
 <!-- yaimgsearch plugin -->
-<link href="{$data.plugin_url}css/yaimgs.combined.css?v=1.17" type="text/css" rel="stylesheet"/>
-<script type="text/javascript" src="{$data.plugin_url}js/yaimgs.combined.js?v=1.17"></script>
+<link href="{$data.plugin_url}css/yaimgs.combined.css?v=1.19" type="text/css" rel="stylesheet"/>
+<script type="text/javascript" src="{$data.plugin_url}js/yaimgs.combined.js?v=1.19"></script>
 {literal}
 <script id="yaimgs-wrapper" type="text/html">
 <div class="yaimgs-container">
@@ -48,7 +48,18 @@
         <div class="yaimgs-batches-wrapper"></div>
     </div>
 </div>
+
+{% if (!o.data.hide_bing_ad) { %}
+<div class="yaimgs-bing">
+    <a href="#" class="js-yaimgs-bing-hide">Больше не показывать <span>&times;</span></a>
+    <a href="http://bing.wedoitpro.ru/" class="yaimgs-bing-link" target="_blank">
+        <p>Попробуйте новый плагин <span>Bing Картинки</span> - без капчи!</p>
+        <span>Всем обладателем Яндекс.Картинки скидка <strong>-20%</strong></span>
+    </a>
+</div>
+{% } %}
 </script>
+
 <script id="yaimgs-images" type="text/html">
     {% for (var i = 0, n = o.images.length, image = o.images[0]; i < n; image = o.images[++i]) { %}
     <div class="yaimgs-gallery-item">

@@ -25,6 +25,10 @@ class shopYaimgsearchPlugin extends shopPlugin {
             'plugin_url' => $this->getPluginStaticUrl(),
             'inject' => $inject
         );
+        $settings = wa('shop')->getPlugin('yaimgsearch')->getSettings();
+        if (isset($settings['hide_bing_ad'])) {
+            $inline_data['hide_bing_ad'] = true;
+        }
         $inline_js = 'var self = this; (function($){ if (typeof yaImgSearch === "function"){ new yaImgSearch(self); } })(jQuery);';
         return "<img style='display:none;' data-bem='".self::escapeString(json_encode($inline_data))."' src='' onerror='".$inline_js."'>";
     }
